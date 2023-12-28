@@ -24,6 +24,7 @@ pipeline {
                 // Build the Docker image using the Dockerfile in the project root
                 script {
                     docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                    docker build -t kingashok9/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
                 }
             }
         }
