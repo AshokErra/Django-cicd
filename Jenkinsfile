@@ -5,7 +5,7 @@ pipeline {
     environment {
          DOCKER_HUB_CREDENTIALS = credentials('kingashok9_hub')
         // Define the Docker image name and tag
-        DOCKER_IMAGE_NAME = "kingashok9/Django-cicd"
+        DOCKER_IMAGE_NAME = "kingashok9/cicd-e2e"
         DOCKER_IMAGE_TAG = "latest"
     }
     
@@ -35,7 +35,7 @@ pipeline {
                 script{
                     sh '''
                     echo 'Push to Repo'
-                    docker push abhishekf5/cicd-e2e:${BUILD_NUMBER}
+                    docker push kingashok9/cicd-e2e:${BUILD_NUMBER}
                     '''
                 }
             }
