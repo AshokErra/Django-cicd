@@ -24,7 +24,7 @@ pipeline {
                 script{
                     sh '''
                     echo 'Buid Docker Image'
-                    docker build -t kingashok9/cicd-e2e:${BUILD_NUMBER} .
+                    docker build -t kingashok9/cicd-e2e:${DOCKER_IMAGE_TAG} .
                     '''
                 }
             }
@@ -33,10 +33,11 @@ pipeline {
         stage('Push the artifacts'){
            steps{
                 script{
-                    sh '''
-                    echo 'Push to Repo'
-                    docker push kingashok9/cicd-e2e:${BUILD_NUMBER}
-                    '''
+                    
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
+                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
+                    }
+                    
                 }
             }
         }
