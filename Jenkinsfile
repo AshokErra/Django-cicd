@@ -21,7 +21,10 @@ pipeline {
         stage('Build Docker'){
             steps { 
                 script { 
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                    sh '''
+                    echo 'Buid Docker Image'
+                    docker build -t kingashok9/cicd-e2e:${BUILD_NUMBER} .
+                    '''
                 }
             }
         }
@@ -29,15 +32,13 @@ pipeline {
         stage('Push the artifacts'){
            steps { 
                script { 
-                   docker.withRegistry( '', registryCredential ) { 
-                        dockerImage.push() 
-                    }
+                   sh '''
+                    echo 'Push to Repo'
+                    docker push kingashok9/cicd-e2e:${BUILD_NUMBER}
+                    '''
                 } 
             }
-        }
-        
-                
-        
+        }    
     }
 }    
     
