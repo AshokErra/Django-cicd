@@ -3,9 +3,7 @@ pipeline {
     agent any 
     
     environment { 
-        registry = "kingashok9/cicd-e2e:${BUILD_NUMBER}" 
-        registryCredential = 'kingashok9_hub' 
-        dockerImage = '' 
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
     
     stages {
