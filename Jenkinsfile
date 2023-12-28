@@ -5,11 +5,12 @@ pipeline {
         dockerImage = '' 
     }
     agent any 
-    stages { 
-        stage('Cloning our Git') { 
-            steps { 
-                git 'https://github.com/AshokErra/Django-cicd.git' 
-            }
+    stage('Checkout'){
+           steps {
+                git credentialsId: '368ec86f-298d-4187-a660-88f3e58c59a2', 
+                url: 'https://github.com/AshokErra/Django-cicd',
+                branch: 'main'
+           }
         } 
         stage('Building our image') { 
             steps { 
