@@ -3,7 +3,7 @@ pipeline {
     agent any 
     
     environment {
-         DOCKER_HUB_CREDENTIALS = credentials('kingashok9_hub')
+         DOCKER_HUB_CREDENTIALS = credentials('kingashok9')
         // Define the Docker image name and tag
         DOCKER_IMAGE_NAME = "kingashok9/cicd-e2e"
         DOCKER_IMAGE_TAG = "latest"
