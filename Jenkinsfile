@@ -23,7 +23,10 @@ pipeline {
             steps {
                 // Build the Docker image using the Dockerfile in the project root
                 script {
-                    docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", ".")
+                    sh '''
+                    echo 'Buid Docker Image'
+                    docker build -t kingashok9/Django-cicd:${BUILD_NUMBER} .
+                    '''
                 }
             }
         }
