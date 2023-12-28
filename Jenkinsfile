@@ -1,42 +1,43 @@
 pipeline {
-    
-    agent any 
-    
-    environment { 
-        IMAGE_TAG = "${BUILD_NUMBER}"
+    agent any
+
+    environment {
+        // Define your Docker Hub credentials
+        DOCKER_HUB_CREDENTIALS = credentials('kingashok9_hub')
+        // Define the Docker image name and tag
+        DOCKER_IMAGE_NAME = "kingashok9/Django-cicd"
+        DOCKER_IMAGE_TAG = "latest"
     }
-    
+
     stages {
-        
-        stage('Checkout'){
-           steps {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from your version control system
                 git credentialsId: '368ec86f-298d-4187-a660-88f3e58c59a2', 
                 url: 'https://github.com/AshokErra/Django-cicd',
                 branch: 'main'
-           }
+            }
         }
 
-        stage('Build Docker'){
-            steps { 
-                script { 
-                    sh '''
-                    echo 'Buid Docker Image'
-                    docker build -t kingashok9/cicd-e2e:${BUILD_NUMBER} .
-                    '''
+        stage('Build Docker Image') {
+            steps {
+                // Build the Docker image using the Dockerfile in the project root
+                script {
+                    docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
                 }
             }
         }
 
-        stage('Push the artifacts'){
-           steps { 
-               script { 
-                   sh '''
-                    echo 'Push to Repo'
-                    docker push kingashok9/cicd-e2e:${BUILD_NUMBER}
-                    '''
-                } 
+        stage('Push Docker Image') {
+            steps {
+                // Push the Docker image to the Docker Hub registry
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
+                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
+                    }
+                }
             }
-        }    
+        }
     }
-}    
+}
     
