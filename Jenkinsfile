@@ -23,13 +23,7 @@ pipeline {
                 }
             }
         }
-        stage('Checkout'){
-           steps {
-                 git credentialsId: '368ec86f-298d-4187-a660-88f3e58c59a2', 
-                url: 'https://github.com/AshokErra/Django-cicd/deploy',
-                branch: 'main'
-           }
-        }
+        
         stage('Deploy to kubernets'){
             steps{
                 script{
