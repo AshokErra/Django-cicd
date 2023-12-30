@@ -1,14 +1,7 @@
 pipeline {
     
     agent any 
-    
-    environment {
-         DOCKER_HUB_CREDENTIALS = credentials('kingashok9')
-        // Define the Docker image name and tag
-        DOCKER_IMAGE_NAME = "kingashok9/cicd-e2e"
-        DOCKER_IMAGE_TAG = "latest"
-    }
-    
+     
     stages {
         
         stage('Checkout'){
@@ -18,26 +11,15 @@ pipeline {
                 branch: 'main'
            }
         }
-
-        stage('Build Docker'){
+     
+    stage("Docker Build & Push"){
             steps{
                 script{
-                    sh '''
-                    echo 'Buid Docker Image'
-                    docker build -t kingashok9/cicd-e2e:${DOCKER_IMAGE_TAG} .
-                    '''
-                }
-            }
-        }
-
-        stage('Push the artifacts'){
-           steps{
-                script{
-                    
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
-                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
+                   withDockerRegistry(credentialsId: 'kingashok9_hub', toolName: 'docker'){   
+                       sh "docker build -t cicd-e2e ."
+                       sh "docker tag cicd-e2e kingashok9/cicd-e2e:latest "
+                       sh "docker push kingashok9/cicd-e2e:latest "
                     }
-                    
                 }
             }
         }
