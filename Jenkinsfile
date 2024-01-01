@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy to kubernets'){
             steps{
                 script{
-                    def kubeconfig = readFile '/home/ashokvm/.kube/config'
+                    
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
                        sh 'kubectl apply -f deploy.yaml'
                   }
