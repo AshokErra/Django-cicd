@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name 2048 -p 3000:3000 kingashok9/cicd-e2e:latest'
+                sh 'docker run -d --name cicd-e2e -p 3000:3000 kingashok9/cicd-e2e:latest'
             }
         }
         stage('Deploy to kubernets'){
