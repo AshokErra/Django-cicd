@@ -23,12 +23,16 @@ pipeline {
                 }
             }
         }
-        
+        stage('Deploy to container'){
+            steps{
+                sh 'docker run -d --name 2048 -p 3000:3000 kingashok9/cicd-e2e:latest'
+            }
+        }
         stage('Deploy to kubernets'){
             steps{
                 script{
                     def kubeconfig = readFile '/home/ashokvm/.kube/config'
-                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
                        sh 'kubectl apply -f deploy.yaml'
                   }
                 }
