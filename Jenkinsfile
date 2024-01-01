@@ -1,6 +1,9 @@
 pipeline {
     
     agent any 
+    environment {
+        KUBECONFIG = '/home/ashokvm/.kube/config'
+    }
      
     stages {
         
